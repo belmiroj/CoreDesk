@@ -1,9 +1,11 @@
 using CoreDesk.API.DTOs;
 using CoreDesk.API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDesk.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/categorias")]
     public class CategoriesController : ControllerBase
