@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CoreDesk.API/CoreDesk.API.csproj" />
+  </Folder>
+</Solution>
