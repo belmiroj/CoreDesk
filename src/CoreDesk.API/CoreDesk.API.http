@@ -1,0 +1,6 @@
+@CoreDesk.API_HostAddress = http://localhost:5221
+
+GET {{CoreDesk.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
