@@ -41,5 +41,14 @@ namespace CoreDesk.API.Repositories
 
         public async Task<bool> HasAssociatedTicketsAsync(int categoryId) =>
             await _context.Tickets.AnyAsync(t => t.CategoryId == categoryId);
+
+        public async Task<bool> ExistsByNameAsync(string name, int? excludeId = null)
+        {
+            var normalizedName = name.Trim().ToLower();
+
+            return await _context.Categories.AnyAsync(c =>
+                c.Name.Trim().ToLower() == normalizedName &&
+                (!excludeId.HasValue || c.Id != excludeId.Value));
+        }
     }
 }

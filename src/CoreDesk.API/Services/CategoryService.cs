@@ -30,10 +30,12 @@ namespace CoreDesk.API.Services
 
         public async Task<CategoryResponse> CreateAsync(CreateCategoryRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Name))
-                throw new ArgumentException("Category name is required.");
+            if (await _repository.ExistsByNameAsync(request.Name))
+            {
+                throw new InvalidOperationException("A category with this name already exists.");
+            }
 
-            var category = new Category { Name = request.Name };
+            var category = new Category { Name = request.Name.Trim() };
             var created = await _repository.AddAsync(category);
 
             return new CategoryResponse(created.Id, created.Name);
@@ -41,13 +43,15 @@ namespace CoreDesk.API.Services
 
         public async Task UpdateAsync(int id, UpdateCategoryRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Name))
-                throw new ArgumentException("Category name is required.");
-
             var category = await _repository.GetByIdAsync(id)
                 ?? throw new KeyNotFoundException("Category not found.");
 
-            category.Name = request.Name;
+            if (await _repository.ExistsByNameAsync(request.Name, id))
+            {
+                throw new InvalidOperationException("Another category with this name already exists.");
+            }
+
+            category.Name = request.Name.Trim();
             await _repository.UpdateAsync(category);
         }
 

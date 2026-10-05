@@ -10,5 +10,6 @@ namespace CoreDesk.API.Repositories.Interfaces
         Task UpdateAsync(Category category);
         Task DeleteAsync(Category category);
         Task<bool> HasAssociatedTicketsAsync(int categoryId);
+        Task<bool> ExistsByNameAsync(string name, int? excludeId = null);
     }
 }

@@ -22,28 +22,67 @@ namespace CoreDesk.API.Controllers
             Ok(await _service.GetAllAsync());
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(int id) =>
-            Ok(await _service.GetByIdAsync(id));
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var category = await _service.GetByIdAsync(id);
+                return Ok(category);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
         {
-            var created = await _service.CreateAsync(request);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            try
+            {
+                var created = await _service.CreateAsync(request);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCategoryRequest request)
         {
-            await _service.UpdateAsync(id, request);
-            return NoContent();
+            try
+            {
+                await _service.UpdateAsync(id, request);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _service.DeleteAsync(id);
-            return NoContent();
+            try
+            {
+                await _service.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }
