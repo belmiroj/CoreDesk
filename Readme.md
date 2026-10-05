@@ -30,6 +30,9 @@ src/CoreDesk.API/
 ├── DTOs/              # Data Transfer Objects para input/output de dados
 ├── Data/              # ApplicationDbContext e Histórico de Migrations
 └── Middlewares/       # Middleware de tratamento global de exceções
+```
+
+---
 
 ## 💼 Funcionalidades Implementadas
 
